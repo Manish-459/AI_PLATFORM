@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
 userSchema.pre("save", async function (next) {
   //update
   if (!this.isModified("password")) {
-    next();
+    return next();
   }
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
@@ -58,10 +58,11 @@ userSchema.methods.getSignedToken = function (res) {
     process.env.JWT_REFRESH_TOKEN,
     { expiresIn: '5h' }
   );
-  res.cookie("refreshToken", `${acccesToken}`, {
+  res.cookie("refreshToken", `${refreshToken}`, {
     maxAge: 86400 * 7000,
     httpOnly: true,
   });
+  return acccesToken;
 };
 
 const User = mongoose.model("User", userSchema);

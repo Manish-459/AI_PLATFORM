@@ -3,13 +3,14 @@ const userModel = require("../models/userModel");
 const errorResponse = require("../utils/errroResponse");
 
 // JWT TOKEN
-exports.sendToken = (user, statusCode, res) => {
+const sendToken = (user, statusCode, res) => {
   const token = user.getSignedToken(res);
   res.status(statusCode).json({
     success: true,
     token,
   });
 };
+exports.sendToken = sendToken;
 
 //REGISTER
 exports.registerContoller = async (req, res, next) => {
@@ -20,12 +21,11 @@ exports.registerContoller = async (req, res, next) => {
     const exisitingEmail = await userModel.findOne({ email:email });
     // console.log("checkpoint 2")
     if (exisitingEmail) {
-      return next(new errorResponse("Email is already register", 500));
+      return next(new errorResponse("Email is already register", 400));
     }
     // console.log("checkpoint 3")
     const user = await userModel.create({ username, email, password });
-    this.sendToken(user, 201, res);
-    return res.json("User Logged in")
+    sendToken(user, 201, res);
   } catch (error) {
     next(error);
   }
@@ -48,7 +48,7 @@ exports.loginController = async (req, res, next) => {
       return next(new errorResponse("Invalid Creditial", 401));
     }
     //res
-    this.sendToken(user, 200, res);
+    sendToken(user, 200, res);
   } catch (error) {
     next(error);
   }

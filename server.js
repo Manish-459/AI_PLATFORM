@@ -24,7 +24,6 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(morgan("dev"));
-app.use(errorHandler);
 
 const PORT = process.env.PORT || 8080;
 
@@ -36,6 +35,9 @@ app.use("/api/v1/openai", require("./routes/openaiRoutes"));
     app.get("*",(req,res)=>{
         res.sendFile(path.join(__dirname,"front","build","index.html"))
     })
+
+//error middleware
+app.use(errorHandler);
 //listen server
 app.listen(PORT, () => {
   console.log(
