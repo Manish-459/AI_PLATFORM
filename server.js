@@ -31,9 +31,9 @@ const PORT = process.env.PORT || 8080;
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/openai", require("./routes/openaiRoutes"));
 
-    app.use(express.static('front/build'));
+    app.use(express.static('client/dist'));
     app.get("*",(req,res)=>{
-        res.sendFile(path.join(__dirname,"front","build","index.html"))
+        res.sendFile(path.join(__dirname,"client","dist","index.html"))
     })
 
 //error middleware
