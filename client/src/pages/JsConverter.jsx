@@ -11,7 +11,7 @@ const JsConverter = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const { data } = await axios.post('http://localhost:8081/api/v1/openai/js-converter', { text });
+      const { data } = await axios.post('/api/v1/openai/js-converter', { text });
       setResult(data);
       toast.success("Converted to JS!");
     } catch (err) {

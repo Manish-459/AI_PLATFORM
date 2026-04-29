@@ -11,7 +11,7 @@ const ParagraphGen = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const { data } = await axios.post('http://localhost:8081/api/v1/openai/paragraph', { text });
+      const { data } = await axios.post('/api/v1/openai/paragraph', { text });
       setResult(data);
       toast.success("Paragraph Generated");
     } catch (err) {

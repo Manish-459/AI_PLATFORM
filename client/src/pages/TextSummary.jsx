@@ -11,7 +11,7 @@ const TextSummary = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const { data } = await axios.post('http://localhost:8081/api/v1/openai/summary', { text });
+      const { data } = await axios.post('/api/v1/openai/summary', { text });
       setSummary(data);
       toast.success("Summary Generated");
     } catch (err) {

@@ -1,5 +1,5 @@
 const { GoogleGenAI } = require("@google/genai");
-const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 const dotenv = require("dotenv");
 dotenv.config();
 const { Configuration, OpenAIApi } = require("openai");
@@ -20,10 +20,10 @@ exports.summaryController = async (req, res) => {
       model: "gemini-flash-lite-latest",
       contents: `Summarize this:\n${text}`,
     });
-    
-    
+
+
     // console.log("2", result.candidates[0].content.parts[0].text);
-    
+
     const summary = result.candidates[0].content.parts[0].text;
     if (summary) {
       return res.status(200).json(summary);
@@ -49,7 +49,7 @@ exports.paragraphController = async (req, res) => {
       model: "gemini-flash-lite-latest",
       contents: `create randome para about:\n${text}`,
     });
-  
+
     const para = result.candidates[0].content.parts[0].text;
     if (para) {
       return res.status(200).json(para);
@@ -68,10 +68,10 @@ exports.paragraphController = async (req, res) => {
 exports.chatbotController = async (req, res) => {
   try {
     const { text, history = [] } = req.body;
-    
+
     // Inject the ChatGPT instruction dynamically into the newest prompt
     const enhancedText = `Answer as a helpful assistant similar to ChatGPT.\nUser says: ${text}`;
-    
+
     const requestContents = [
       ...history,
       { role: 'user', parts: [{ text: enhancedText }] }
@@ -81,7 +81,7 @@ exports.chatbotController = async (req, res) => {
       model: "gemini-flash-lite-latest",
       contents: requestContents,
     });
-  
+
     const para = result.candidates[0].content.parts[0].text;
     if (para) {
       return res.status(200).json(para);
@@ -107,12 +107,12 @@ exports.jsconverterController = async (req, res) => {
       model: "gemini-flash-lite-latest",
       contents: `/* convert these instruction into javascript code \n${text}`,
     });
-  
+
     const para = result.candidates[0].content.parts[0].text;
     if (para) {
       return res.status(200).json(para);
     }
-    
+
   } catch (err) {
     let msg = err.message;
     if (msg && (msg.includes("429") || msg.includes("quota"))) {
@@ -128,18 +128,18 @@ exports.jsconverterController = async (req, res) => {
 exports.scifiImageController = async (req, res) => {
   try {
     const { text } = req.body;
-    
+
     // Bypass Gemini API to save quota! Create the enhanced prompt manually
     const enhancedPrompt = `${text}, highly detailed Sci-Fi aesthetic, cyberpunk, neon lighting, futuristic, 8k cinematic resolution`;
     const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(enhancedPrompt)}?width=800&height=800&nologo=true`;
-    
+
     try {
       const response = await fetch(imageUrl);
       if (!response.ok) throw new Error("Failed to fetch image");
       const arrayBuffer = await response.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
       const base64Image = `data:image/jpeg;base64,${buffer.toString('base64')}`;
-      
+
       return res.status(200).json({ url: base64Image });
     } catch (fetchErr) {
       return res.status(200).json({ url: imageUrl }); // fallback to URL

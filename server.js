@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 // const colors = require("colors");
 const connectDB = require("./config/db");
 const errorHandler = require("./middelwares/errorMiddleware");
-const path=require("path");
+const path = require("path");
 
 //routes path
 const authRoutes = require("./routes/authRoutes");
@@ -31,10 +31,10 @@ const PORT = process.env.PORT || 8080;
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/openai", require("./routes/openaiRoutes"));
 
-    app.use(express.static('client/dist'));
-    app.get("*",(req,res)=>{
-        res.sendFile(path.join(__dirname,"client","dist","index.html"))
-    })
+app.use(express.static('client/dist'));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"))
+})
 
 //error middleware
 app.use(errorHandler);

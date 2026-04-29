@@ -11,7 +11,7 @@ const ScifiImage = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const { data } = await axios.post('http://localhost:8081/api/v1/openai/scifi-image', { text });
+      const { data } = await axios.post('/api/v1/openai/scifi-image', { text });
       setImage(data.url);
       toast.success("Image Generated");
     } catch (err) {

@@ -11,7 +11,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('http://localhost:8081/api/v1/auth/login', { email, password });
+      const { data } = await axios.post('/api/v1/auth/login', { email, password });
       localStorage.setItem("authToken", true);
       toast.success("Welcome back to AI Nexus!");
       navigate('/dashboard');

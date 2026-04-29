@@ -19,19 +19,19 @@ const ChatBot = () => {
 
     const currentText = text;
     setText(''); // Instantly clear the input box like ChatGPT!
-    
+
     const userMessage = { role: 'user', parts: [{ text: currentText }] };
     const currentHistory = [...messages];
-    
+
     setMessages([...currentHistory, userMessage]);
     setLoading(true);
 
     try {
-      const { data } = await axios.post('http://localhost:8081/api/v1/openai/chatbot', { 
+      const { data } = await axios.post('/api/v1/openai/chatbot', {
         text: currentText,
-        history: currentHistory 
+        history: currentHistory
       });
-      
+
       const aiMessage = { role: 'model', parts: [{ text: data }] };
       setMessages(prev => [...prev, aiMessage]);
     } catch (err) {
@@ -47,7 +47,7 @@ const ChatBot = () => {
     <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 120px)', maxWidth: '1000px', margin: '0 auto' }}>
       <h2 className="heading-primary text-gradient" style={{ textAlign: 'center', marginBottom: '8px' }}>AI Chatbot</h2>
       <p style={{ color: 'var(--text-secondary)', textAlign: 'center', marginBottom: '24px' }}>A highly intelligent, context-aware conversational AI.</p>
-      
+
       {/* Scrollable Chat Window */}
       <div className="glass-panel" style={{ flex: 1, padding: '24px', marginBottom: '24px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '20px' }}>
         {messages.length === 0 && (
